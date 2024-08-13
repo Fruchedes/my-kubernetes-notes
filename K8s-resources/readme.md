@@ -30,14 +30,14 @@
 
 
 #### Why do companies adopt kubernetes?
->>**Container Orchestration**: simplifies the management, deployment, scaling of your containerized applications
->>**Service Discovery, autoscaling and Load Balancing**; where applications can be automatically discovered by other services, scaled up or down based on demand, and distributed
->>**Simplifies deployments**supports different deployments strategies, Rolling Update & Rollbacks,  release new versions of applications and to revert to previous versions if needed
->>**Storage Orchestration, Self-Healing, Secrets and Configuration Management** inbuilt mechanism for healing, managing storage and securing sensitive information
->>**Multi-Cloud and Hybrid Cloud Support** supports deployment across omprem and multicloud environments
->>**Role-Based Access Control (RBAC)**
->>**Pods and Multi-Container SupportMonitoring and Logging** intergrates various monitoring tools to perform health checks
->>**Highly available and has self healing capabilities**: scale up and down based on workloads and helps your application beacome resilient. I f a container fails it is restarted over and over
+**Container Orchestration**: simplifies the management, deployment, scaling of your containerized applications
+**Service Discovery, autoscaling and Load Balancing**; where applications can be automatically discovered by other services, scaled up or down based on demand, and distributed
+**Simplifies deployments**supports different deployments strategies, Rolling Update & Rollbacks,  release new versions of applications and to revert to previous versions if needed
+**Storage Orchestration, Self-Healing, Secrets and Configuration Management** inbuilt mechanism for healing, managing storage and securing sensitive information
+**Multi-Cloud and Hybrid Cloud Support** supports deployment across omprem and multicloud environments
+**Role-Based Access Control (RBAC)**
+**Pods and Multi-Container SupportMonitoring and Logging** intergrates various monitoring tools to perform health checks
+**Highly available and has self healing capabilities**: scale up and down based on workloads and helps your application beacome resilient. I f a container fails it is restarted over and over
 
 
 #### MONOLITHIC ARCHITECTURE: is are monolithic stacks
@@ -53,7 +53,7 @@
 >Doesn't require complex networking  and has a lower overhead
 >Has only only a few points of entry 
 
- **Cons**:
+ **Cons**
 >Require the whole application to be deployed
 >Doesn't scale well if parts of the application breaks
 >Diffcult to update all application dependecies and libraries
