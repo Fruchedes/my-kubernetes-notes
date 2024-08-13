@@ -119,14 +119,14 @@ echno -n 'snap' ./ password.txt
 kubectl create secret generic mysecret --from=file=./username.txt --from=./password.txt
 
 - **Deployment**: manages lifecycle of apllications including deployment, scaling, rollingout(gradually updaing the application), rollback reverting back to a preious version)
->>**Replica set**: ensures a specific number of pods are running  and it's used for scaling
->>**Daemon set**: objects that are ran on every node in a cluster  and are used for logging, monitoring .
->>**Stateful set**: objects that manages stateful applications requiring persistent storage, network identities such as database, message queries
+- **Replica set**: ensures a specific number of pods are running  and it's used for scaling
+- **Daemon set**: objects that are ran on every node in a cluster  and are used for logging, monitoring .
+- **Stateful set**: objects that manages stateful applications requiring persistent storage, network identities such as database, message queries
 
->>**Headless service**:  manage network access to a set of Pods without using the standard load-balancing features.  a headless service provides DNS records that map to the individual Pods.
+- **Headless service**:  manage network access to a set of Pods without using the standard load-balancing features.  a headless service provides DNS records that map to the individual Pods.
  Enables direct communication between Pods, such as with StatefulSets
->>**Sidecar**:  specialized containers that run to completion before the main application containers in a Pod start.
->>**Init container**:
+- **Sidecar**:  specialized containers that run to completion before the main application containers in a Pod start.
+- **Init container**:
 >Useful: when we want to perform data migration or pre-processing tasks before the application starts.
 >Labels: used to identify and group resources
 >>>**Selectors**: are used to query and select resources based on their labels
@@ -137,95 +137,94 @@ Node selectors:
 usecases: grant specific permissions, run applications with different roles
 
 #### 4 resources under RBAC role based acess control authorization mechanism
->>**Cluster binding**: granting persmission and access right with in cluster
->**Role binding**: granting permission and access right with in namespace
->**Roles**: set of rules that define permissions and access rights to specificed resources within namespace
->>**Cluster role**: used to grant permission to users to manage resources inthe cluster 
->**Service**: provides stable identity and endpoint that other apps can use to intereact
- 
->>**Liveness probe**: checks the health of the container and restarts the container
->>**Readiness probe**: determines when to start accepting traffic
+- **Cluster binding**: granting persmission and access right with in cluster
+- **Role binding**: granting permission and access right with in namespace
+- **Roles**: set of rules that define permissions and access rights to specificed resources within namespace
+- **Cluster role**: used to grant permission to users to manage resources inthe cluster 
+- **Service**: provides stable identity and endpoint that other apps can use to intereact
+- **Liveness probe**: checks the health of the container and restarts the container
+- **Readiness probe**: determines when to start accepting traffic
 >>**Startup probe**:
 
 ### DEPLOYMENT TYPES: 
->>**Rollbacks**: reverting to previous stable state after an update has introduced issues or failures
->>**Rolling updates**; default deployment replaces old pods with new ones ensuring a number of pods are available and healthty at all times
->>**Blue-green deployment**: traffic is redirected from the prod to new green env and can be switched back
->>**Canary deployment**: allows you to test a subset 
+- **Rollbacks**: reverting to previous stable state after an update has introduced issues or failures
+- **Rolling updates**; default deployment replaces old pods with new ones ensuring a number of pods are available and healthty at all times
+- **Blue-green deployment**: traffic is redirected from the prod to new green env and can be switched back
+- **Canary deployment**: allows you to test a subset 
 
->**VOLUMES**: used to provide persistent staorage for containers
-**ReadWriteOnce (RWO)** – The volume is mounted with read-write access for a single Node in your cluster. Any of the Pods running on that Node can read and write the volume’s contents.
-**ReadOnlyMany (ROX)** – The volume can be concurrently mounted to any of the Nodes in your cluster, with read-only access for any Pod.
-**ReadWriteMany (RWX)** – Similar to ReadOnlyMany, but with read-write access.
-**ReadWriteOncePod (RWOP)** – This new variant, introduced as a beta feature in Kubernetes v1.27, enforces that read-write access is provided to a single Pod. No other Pods in the cluster will be able to use the volume simultaneously.
+- **VOLUMES**: used to provide persistent staorage for containers
+- **ReadWriteOnce (RWO)** – The volume is mounted with read-write access for a single Node in your cluster. Any of the Pods running on that Node can read and write the volume’s contents.
+- **ReadOnlyMany (ROX)** – The volume can be concurrently mounted to any of the Nodes in your cluster, with read-only access for any Pod.
+- **ReadWriteMany (RWX)** – Similar to ReadOnlyMany, but with read-write access.
+- **ReadWriteOncePod (RWOP)** – This new variant, introduced as a beta feature in Kubernetes v1.27, enforces that read-write access is provided to a single Pod. No other Pods in the cluster will be able to use the volume simultaneously.
 ### TYPES OF VOLUMES: 
-**local** – Data is stored on devices mounted locally to your cluster’s Nodes.
-**hostPath** – Stores data within a named directory on a Node (this is designed for testing purposes and doesn’t work with multi-Node clusters).
-**nfs** – Used to access Network File System (NFS) mounts.
-**iscsi**– iSCSI (SCSI over IP) storage attachments.
-**csi** – Allows integration with storage providers that support the Container Storage Interface (CSI) specification, such as the block storage services provided by cloud platforms.
-**cephfs** – Allow the use of CephFS volumes.
-**fc** – Fibre Channel (FC) storage attachments.
-**rbd** – Rados Block Device (RBD) volumes.
->>**PV**  are cluster wide storage resources/objects that allow pods to access storage from defined device
->>**PVC**. request for storage resources  used to mount persistent volume into a Pod. such as Elasticblock, Azure Disk, Vsphere volume and CSI driver
->**Network policies**: define rules that specify how pods communicates and other endpoints
-**Ingress**: manages external access to services provides LB, HTTP routes, SSL terminations
->>**ingress rules**: defines how traffic is allowed into selected pods
->>**Egress rules**: deifnes how traffic is allowed to flow out of the selected pods
+- **local** – Data is stored on devices mounted locally to your cluster’s Nodes.
+- **hostPath** – Stores data within a named directory on a Node (this is designed for testing purposes and doesn’t work with multi-Node clusters).
+- **nfs** – Used to access Network File System (NFS) mounts.
+- **iscsi**– iSCSI (SCSI over IP) storage attachments.
+- **csi** – Allows integration with storage providers that support the Container Storage Interface (CSI) specification, such as the block storage services provided by cloud platforms.
+- **cephfs** – Allow the use of CephFS volumes.
+- **fc** – Fibre Channel (FC) storage attachments.
+- **rbd** – Rados Block Device (RBD) volumes.
+- **PV**  are cluster wide storage resources/objects that allow pods to access storage from defined device
+- **PVC**. request for storage resources  used to mount persistent volume into a Pod. such as Elasticblock, Azure Disk, Vsphere volume and CSI driver
+- **Network policies**: define rules that specify how pods communicates and other endpoints
+- **Ingress**: manages external access to services provides LB, HTTP routes, SSL terminations
+- **ingress rules**: defines how traffic is allowed into selected pods
+- **Egress rules**: deifnes how traffic is allowed to flow out of the selected pods
 
->>**TLS** referes to transport Layer security 
->>**NGINX INGRESS CONTROLLER** managing and routing incoming HTTP and HTTPS traffic to services within the cluster. NGINX Ingress Controller uses NGINX as the underlying reverse proxy and load balancer, providing features like host-based routing, path-based routing, TLS termination,
->>**EGRESS** controlled and filtered to restrict access to external resources or enforce security policies.
->>**SET MANAGER**: assigns certificates to applications
->>**VERTICAL POD AUTOSCALER**: adjusts the CPU and memory resource requests of pods based on their resource usage patterns. VPA helps optimize resource allocation by dynamically scaling the resource requests of pods to match their actual resource utilization. 
->>**HORIZONTAL POD AUTOSCALER**: number of pod replicas based on observed CPU or custom metrics. HPA helps scale applications horizontally by increasing or decreasing the number of pod replicas in response to changes in resource utilization
+- **TLS** referes to transport Layer security 
+- **NGINX INGRESS CONTROLLER** managing and routing incoming HTTP and HTTPS traffic to services within the cluster. NGINX Ingress Controller uses NGINX as the underlying reverse proxy and load balancer, providing features like host-based routing, path-based routing, TLS termination,
+- **EGRESS** controlled and filtered to restrict access to external resources or enforce security policies.
+- **SET MANAGER**: assigns certificates to applications
+- **VERTICAL POD AUTOSCALER**: adjusts the CPU and memory resource requests of pods based on their resource usage patterns. VPA helps optimize resource allocation by dynamically scaling the resource requests of pods to match their actual resource utilization. 
+- **HORIZONTAL POD AUTOSCALER**: number of pod replicas based on observed CPU or custom metrics. HPA helps scale applications horizontally by increasing or decreasing the number of pod replicas in response to changes in resource utilization
 HPA
 
 #### SERVICES IN KUBERNETES
->**SERVICES**: abstraction that defines a logical set of pods and policy by which to access them.
->**ClusterIP**: Exposes the service within the cluster, makes it reachable only within cluster
->**NodeIP**: Exposes the service through a static port on each node
->**Loadbalancer**: Exposes the service using  a loadbalancer to evenly distrbute traffic
->**External name**: Services will be mapped to a DNS name.
->**HEADLESS SERVICE**:  enables you to reach ports without accessing via proxy.
+- **SERVICES**: abstraction that defines a logical set of pods and policy by which to access them.
+- **ClusterIP**: Exposes the service within the cluster, makes it reachable only within cluster
+- **NodeIP**: Exposes the service through a static port on each node
+- **Loadbalancer**: Exposes the service using  a loadbalancer to evenly distrbute traffic
+- **External name**: Services will be mapped to a DNS name.
+- **HEADLESS SERVICE**:  enables you to reach ports without accessing via proxy.
 
 #### NETWORKING IN KUBERNETES
->>**Networking**: CNI stands for container network interface, manages the way pods and containers connect to the network. Different flavours of CNI's such as Calico, Flannel, Weavenet, Antrea, Tigera Seucure, Mellanox VDPA, kube router
-**Calico**: open-source
-**Flannel**: CNI plugin that uses layer 3 networking
-**Weave**: CNI plugin that provides scalable, networking policies 
-**Cilium**: best CNI plugin, provides best security, observability and good for complex clusters
-**Kube-router**: lightweight CNI plugin Loadbalancer with loadbalancing features and network policiess
+- **Networking**: CNI stands for container network interface, manages the way pods and containers connect to the network. Different flavours of CNI's such as Calico, Flannel, Weavenet, Antrea, Tigera Seucure, Mellanox VDPA, kube router
+- **Calico**: open-source
+- **Flannel**: CNI plugin that uses layer 3 networking
+- **Weave**: CNI plugin that provides scalable, networking policies 
+- **Cilium**: best CNI plugin, provides best security, observability and good for complex clusters
+- **Kube-router**: lightweight CNI plugin Loadbalancer with loadbalancing features and network policiess
 
 #### WHY use CALICO? Provides ###
--**Advanced networking policies**: define fine-frained networking policies  and rules over containers based on labels, ports
-**Scalability**: Handles large clusters with ease 
-**Cross-Cluster networking**: has the capacity to connect multiple clusters together
-**Border Gateway Protocol routing**: supports BGP routing good for onprem
-**Security**: encrypts network traffic so only authoriszed pods can communicate with respective pods
+- **Advanced networking policies**: define fine-frained networking policies  and rules over containers based on labels, ports
+- **Scalability**: Handles large clusters with ease 
+- **Cross-Cluster networking**: has the capacity to connect multiple clusters together
+- **Border Gateway Protocol routing**: supports BGP routing good for onprem
+- **Security**: encrypts network traffic so only authoriszed pods can communicate with respective pods
 
 #### VOLUMES KUBERNETES
-Ephemeral means if containers are restarted they would loose their data and it requires persistance
-EmptyDir: used to share volumes between multiple containers within a pods
+- **Ephemeral** means if containers are restarted they would loose their data and it requires persistance
+- **EmptyDir**: used to share volumes between multiple containers within a pods
                   Data is stored in volumes that reside inside the Pods only
 
-hostPath: helps access data of the pods or container volumes from the host machine
+- **hostPath**: helps access data of the pods or container volumes from the host machine
                 Replicates data of the volumes on the host machine, if changes on the host are made, it is refelcted on the pods volumes
 
-Persistent volume: process of storing data in the Cloud such as EBS, Azure disk
+- **Persistent volume**: process of storing data in the Cloud such as EBS, Azure disk
 To get a Persistent volume, you need to claim the volume via the help of of a Persistent Volume Claim
 
-Liveness Probe in KUBERNETES
-LivenessProbe: used to check the health of your application by specifying that in the manifest file.
+## Liveness Probe in KUBERNETES
+- **LivenessProbe**: used to check the health of your application by specifying that in the manifest file.
 A 0 output of livenessProbe means the application is running perfectly
 LivenessProbe repeats the process  after seconds or minutes
 Liveness Probe also recreates pods when it detects the application health checks are unevenly yoked
 
 **ConfigMaps and Secrets in KUBERNETES**
-ConfigMap: used to store configuration data which is non-confidential in key-value pairs by decoupling the application to get rid of the hard-corded values
+- **ConfigMap: used to store configuration data which is non-confidential in key-value pairs by decoupling the application to get rid of the hard-corded values
 
-**Secrets**: stores sensitive info such as password, API keys, TLS certificate. 
+- **Secrets**: stores sensitive info such as password, API keys, TLS certificate. 
 Provides extra layer of security encodes and decodes using base64-encoded format
 Can be mounted in volumes in pods
 is a feature that encrypts data stores sensitve data up to 1MB 
@@ -288,30 +287,29 @@ Let’s understand with hands-on and theoretical.
 2. If the requests are given but the limit is not provided then, the default limit will be used.
 3. If the request
 
-**Service Account**: A service account provides an identity for processes that run in a Pod. This is how Kubernetes authorizes API requests.
-**RBAC (Role-Based Access Control)**: RBAC is a method of regulating access to computer or network resources based on roles assigned to individual users within an enterprise.
-**Cluster Role**: Cluster-wide roles define permissions on cluster-scoped resources.
-**Role**: Roles define permissions within a namespace. Not tied to namespaces
-Role Binding: Role bindings bind roles to subjects. A subject can be a user, group, or service account. permission with in cluster
-DaemonSet: A DaemonSet ensures that all (or some) nodes run a copy of a Pod.
-StatefulSet: A StatefulSet manages the deployment and scaling of a set of Pods, and provides guarantees about the ordering and uniqueness of these Pods.
+- **Service Account**: A service account provides an identity for processes that run in a Pod. This is how Kubernetes authorizes API requests.
+- **RBAC (Role-Based Access Control)**: RBAC is a method of regulating access to computer or network resources based on roles assigned to individual users within an enterprise.
+- **Cluster Role**: Cluster-wide roles define permissions on cluster-scoped resources.
+- **Role**: Roles define permissions within a namespace. Not tied to namespaces
+- **Role Binding**: Role bindings bind roles to subjects. A subject can be a user, group, or service account. permission with in cluster
+- **DaemonSet**: A DaemonSet ensures that all (or some) nodes run a copy of a Pod.
+- **StatefulSet**: A StatefulSet manages the deployment and scaling of a set of Pods, and provides guarantees about the ordering and uniqueness of these Pods.
 Label: Labels are key/value pairs that are attached to objects like Pods, Services, and Deployments to organize and select subsets of objects.
-Namespaces: Namespaces provide a way to divide cluster resources between multiple users or teams.
-Cluster: A cluster consists of at least one worker node and at least one master node.
-Pods: Pods are the smallest and simplest Kubernetes objects. A Pod represents a single instance of a running process in your cluster.
-Deployment: A Deployment provides declarative updates for Pods and ReplicaSets.
+- **Namespaces**: Namespaces provide a way to divide cluster resources between multiple users or teams.
+- **Cluster**: A cluster consists of at least one worker node and at least one master node.
+- **Pods**: Pods are the smallest and simplest Kubernetes objects. A Pod represents a single instance of a running process in your cluster.
+- **Deployment**: A Deployment provides declarative updates for Pods and ReplicaSets.
 
-ReplicaSet: A ReplicaSet ensures that a specified number of pod replicas are running at any given time and works on eaulity controller-only. 
-Replication Controller: ensures a specified number of pods are running
+- **ReplicaSet**: A ReplicaSet ensures that a specified number of pod replicas are running at any given time and works on eaulity controller-only. 
+- **Replication Controller**: ensures a specified number of pods are running
 
 Replicaset and replication are both repsonsible for vailability and autoscaling of pods, both ensures specified number of pods are running. 
 
-Labels: defined in keyvalue-pairs, similar to tags, used to organise k8s objects suchs as pods, nodes
-Equality based selectors: select/filter objects by label key and values
-Set-based selectors: select objects with a particular key with specified values
+- **Labels**: defined in keyvalue-pairs, similar to tags, used to organise k8s objects suchs as pods, nodes
+- **Equality based selectors**: select/filter objects by label key and values
+- **Set-based selectors**: select objects with a particular key with specified values
 
-Kubernetes webhook authentification:
-
+## Kubernetes webhook authentification:
  is an HTTPS service that recieved a request in defined format
 manages webhook authentification via valid certficate, static token file, openID connect tokens and service accounts
 Process: user generates a token to call for the Kube Api
@@ -319,12 +317,9 @@ The token is receieved by the kubernetes api passes through an auth webhook in p
 Webhook validates token and returns status in predefined format
 
 
-
-
 Kubernetes validation webhook:
 
 Autoscaler:
-
 daemon set: replicates pods across your nodes in the cluster, used for running node monitoring, collecting logs from nodes, backing up node data
 stateful set: ensures pods are created in a specific order
 replication controller :
