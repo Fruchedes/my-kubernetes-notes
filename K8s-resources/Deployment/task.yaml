@@ -1,0 +1,59 @@
+/* TASK 
+Create 3 deployments within the namespace.
+Each deployment should have
+A ConfigMap mounted.
+A Secret mounted.
+Proper liveness and readiness probes configured.
+Ensure that each deployment has appropriate resource requests and limits.
+*/
+
+/* USED FOR EXAMPLES OR REFERENCES
+
+### create a deployment in a specific name space
+/*
+vi nginx-deployment.yaml
+kubectl -f apply nginx-deployment.yaml
+kubect get deployment nginx-deployment -n sandbox-90075241
+kubectol get rs
+kubectl get replicaset nginx-deployment -n sandbox-90075241
+kubectl edit deployment nginx-deployment -n sandbox-90075241
+kubectl describe deployment nginx-deployment
+kubectl rollout restart deployment nginx-deployment
+kubectl set image deployment.v1.apps/nginx-deployment nginx=nginx:1.16.1
+kubectl rollout status deployment/nginx-deployment
+kubectl exec -it podname -c image-name --bash
+kubectl debug -it pod-name --image=image --bash
+kubectl set image deployment/nginx-deployment nginx=nginx:1.161
+kubectl port-forward pod-name 8080:80
+kubectl get pods -n namespace
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  namespace: sandbox-90075241
+  labels:
+    app: nginx
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.14.2
+        ports:
+        - containerPort: 80
+  */
+
+Create a deployment with secret-key
+create a deplyment with configmap
+create a deployment with Secret
+create a deployment with 
+*/

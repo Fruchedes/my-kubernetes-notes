@@ -1,0 +1,66 @@
+create a pv with mouthpath host tmp/data
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nginx-pv
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 1Gi
+  storageClassName: standard
+  hostPath:
+    path: /tmp/nginx-pv
+
+## create a pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nginx-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: standard
+  volumeName: nginx-pv
+
+#attach pvc to pod
+---
+  apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-pod
+spec:
+  containers:
+    - name: nginx-container
+      image: nginx:latest
+      ports: 
+       - containerPort: 80
+      volumeMounts:
+        - mountPath: tmp/data
+          name: data
+  volumes:
+    - name: data
+      persistentVolumeClaim:
+        claimName: pvc-dynamic
+
+/* kubectl apply -f pod.yaml
+pod/pvc-pod created
+
+# Get a shell inside the Pod
+$ kubectl exec -it pod/pvc-pod -- bash
+
+# No files in the volume yet
+root@pvc-pod:/# ls /data
+
+# Write a file to the volume
+root@pvc-pod:/# echo "bar" > /data/foo
+
+# The file now shows in the volume
+root@pvc-pod:/# ls /data
+foo
+*/

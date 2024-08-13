@@ -1,0 +1,50 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: my-configmap
+  namespace: sandbox-90075241
+data:
+  config-key: config-value
+
+## Error logging
+error_log /var/log/nginx/error.log;
+
+## server configuration
+server {
+    listen 80;
+    server_name example.com;
+    
+    location / {
+        root /var/www/html;
+        index index.html;
+    }
+}
+
+## proxy pass configuration
+server {
+    listen 80;
+    server_name example.com;
+
+    location / {
+        proxy_pass http://backend_server;
+    }
+}
+
+## security and access control
+server {
+    listen 80;
+    server_name example.com;
+
+    location /secured {
+        allow 192.168.1.0/24;
+        deny all;
+    }
+}
+##ssl configuration
+server {
+    listen 443 ssl;
+    server_name example.com;
+
+    ssl_certificate /path/to/certificate.crt;
+    ssl_certificate_key /path/to/privatekey.key;
+}

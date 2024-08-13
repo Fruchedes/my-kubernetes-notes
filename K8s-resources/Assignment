@@ -1,0 +1,199 @@
+# create a namespace
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: frontend-nginx
+# create a service
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-nodeip
+  namespace: frontend-nginx
+spec:
+  type: NodeIP 
+  selector:
+    app: nginx-app-1
+  ports:
+    - protocol: TCP
+      port: 80 
+      targetPort: 80
+# create a configmap
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-configmap
+  namespace: frontend-nginx
+data:
+  nginx.conf: |
+    server {
+      listen 80;
+      server_name localhost;
+      location /healthz {
+        return 200 'ok';
+      }
+
+      location /{
+        root /usr/share/nginx/html;
+        index index.html;
+      }
+    }
+# create a secret  
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: nginx-secret
+  namespace: frondend-nginx
+type: Opaque
+data:
+  secret-key: <base64-encoded-value>
+
+# Define a storage class
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: csi-storageclass
+  namespace: frontend-nginx
+provisioner: csi-driver-name
+
+# Create a persistent volume
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nginx-pv
+  namespace: frontend-nginx
+spec:
+   accessModes:
+    - ReadWriteOnce 
+  capacity:
+    storage: 1Gi
+  storageClassName: csi-storageclass # or standard with hostPath:
+ 
+  persistentVolumeReclaimPolicy: Retain
+  csi:
+    driver: csi-driver-name
+    volumeHandle: unique-volume-id-for-nginx
+
+# Create a PVC
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nginx-pvc
+  namespace: frontend-nginx
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: csi-storageclass # or standard
+
+
+## create a deployment with configmap, secret, liveness and readiness probe
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment-1
+  namespace: frontend-nginx
+spec:
+  replicas: 2
+  selector:
+    matchlabels:
+      app: nginx-app-1
+  template:
+    metadata:
+      labels:
+        app: nginx-app-1
+    spec:
+      containers:
+      - name: nginx-container
+        image: nginx:latest
+        volumeMounts:
+        - name: nginx-configmap
+          mountPath: /etc/nginx/nginx.conf
+          subPath: nginx.conf
+        - name: nginx-secret
+          mountPath: /etc/nginx/secret
+        - name: nginx-ps
+          mouthpath: /usr/share/nginx/html
+      readinessProbe: # determines when a pod is ready to accept traffic
+        httpGet:
+          path: / healthz
+          port: 80
+        initialDelaySeconds: 5 
+        periodSeconds: 10
+      livenessProbe: #checks if the container is running as expected
+        httpGet:
+          path: /healthz # creates a script in the ngixconfig which checks the health
+          port: 80
+        initialDelaySeconds: 10
+        periodSeconds: 15
+        failureThreshold: 3
+        successThreshold: 1
+        timeoutSeconds: 1
+        resources: 
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+
+# Repeat the above template for deployment-2 and deployment-3
+# deployment with  configmap, secret, PV, PVC, CSI, liveness and readiness probe
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment-1
+  namespace: frontend-nginx
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: nginx-app-1
+    spec:
+      containers:
+      - name: nginx-container
+        image: nginx:latest
+        volumeMounts:
+        - name: nginx-config
+          mountPath: /etc/nginx/nginx.conf
+          subPath: nginx.conf
+        - name: nginx-secret
+          mountPath: /etc/nginx/secret
+        -name: nginx-ps
+          mouthPath: /data
+      volumes:
+         persistentVolumeClaim:
+         claimName:nginx-pvc
+      readinessProbe:
+        httpGet:
+          path: /
+          port: 80
+        initialDelaySeconds: 5
+        periodSeconds: 10
+      livenessProbe:
+        httpGet:
+          path: /
+          port: 80
+        initialDelaySeconds: 10
+        periodSeconds: 15
+        failureThreshold: 3
+        successThreshold: 1
+        timeoutSeconds: 1
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"

@@ -1,0 +1,72 @@
+/* A Pods can have multiple containers
+Containers within a pod share networking and storage
+init and sidercar containers */
+# There are many configurations available for pods and that includes:
+#Listening ports, health probes, resource limits, request, security contxt, volumes DNS policies
+
+#create a pod with listening ports
+
+   kubectl create ns sandox-90075241 #creates namespace 
+   vi sandbox-pod.yaml  #edit the pod
+   kubectl get pods -A  #list all ports
+   kubectl port-forward pod-name 8080:8080 
+   kubectl get pods -ns namespace
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx #names of the pod 
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.14.2
+    ports:
+    - containerPort: 80 #port listening too 
+    
+
+#create a pod with health probes readiness and liveness
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-better
+  namespace: 04--pod
+spec:
+  containers:
+    - name: nginx
+      image: cgr.dev/chainguard/nginx:latest
+      ports:
+         - containerPort: 8080
+              protocol: TCP #Used for applications that expose HTTP endpoints for health checks.
+          livenessProbe:
+            httpGet: #Used for applications that expose HTTP endpoints for health checks.
+              path: /healthz
+              port: 8080
+            initialDelaySeconds: 30
+            periodseconds: 10
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+            initialDelaySeconds: 5
+            periodseconds: 5
+      resources:
+        limits:
+          memory: "50Mi"
+        requests:
+          memory: "50Mi"
+          cpu: "250m"
+      securityContext:
+        allowPrivilegeEscalation: false
+        privileged: false
+  securityContext:
+    seccompProfile:
+      type: RuntimeDefault
+    runAsUser: 1001
+    runAsGroup: 1001
+    runAsNonRoot: true
+
+ 
+
+

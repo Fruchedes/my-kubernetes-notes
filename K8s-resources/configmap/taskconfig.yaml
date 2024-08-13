@@ -1,0 +1,3 @@
+create a kubeconfig map
+
+kubectl apply -f configmap.yaml

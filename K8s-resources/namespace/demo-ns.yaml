@@ -1,0 +1,11 @@
+
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: sandbox-90075241
+
+  #vi sandox-90075241.yaml
+  #kubectl create ns namespace-name
+  #kubectl apply -f namespace-name.yaml
+  #kubectl delete -f namespac-name.yaml

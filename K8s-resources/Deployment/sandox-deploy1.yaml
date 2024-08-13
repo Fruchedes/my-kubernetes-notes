@@ -1,0 +1,89 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: sandbox-90075241
+  labels:
+    app: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+        - name: nginx
+          image: cgr.dev/chainguard/nginx:latest
+          volumeMounts:
+          - name: config-volume
+            mountPath: /etc/config
+          - name: secret-volume
+            mountPath: /etc/secret
+          ports:
+            - containerPort: 8080
+              protocol: TCP #Used for applications that expose HTTP endpoints for health checks.
+          livenessProbe:
+            httpGet: #Used for applications that expose HTTP endpoints for health checks.
+              path: /healthz
+              port: 8080
+            initialDelaySeconds: 30
+            periodseconds: 10
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+            initialDelaySeconds: 5
+            periodseconds: 5
+          resources:
+            limits:
+              memory: "50Mi"
+            requests:
+              memory: "50Mi"
+              cpu: "250m"
+          securityContext: #disallow priviledge ecalation and set the priviledge value to false
+            allowPrivilegeEscalation: false
+            privileged: false
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
+        runAsUser: 1001
+        runAsGroup: 1001
+        runAsNonRoot: true
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-config
+data:
+  default.conf: |
+    server {
+        listen 80;
+        server_name localhost;
+
+        location /healthz {
+            return 200 'ok';
+            add_header Content-Type text/plain;
+        }
+
+        location / {
+            root /usr/share/nginx/html;
+            index index.html index.htm;
+        }
+    }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sandbox-90075241
+spec:
+  selector:
+    app: frontend
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80

@@ -1,0 +1,2 @@
+# create a replicaset
+#Differnece between replica sets and deployments: deployments used for stateless applications have an add on rolls-out and rolls-back specify how you want the pods to change update moving from one configuration to the next

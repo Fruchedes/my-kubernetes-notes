@@ -1,0 +1,41 @@
+
+
+
+
+
+
+Attach volume to pod
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-pod
+spec:
+  containers:
+    - name: nginx-container
+      image: nginx:latest
+      volumeMounts:
+        - mountPath: /data
+          name: data
+  volumes:
+    - name: data
+      persistentVolumeClaim:
+        claimName: pvc-dynamic
+
+/* Create your Pod, then try writing some files to /data:
+$ kubectl apply -f pod.yaml
+pod/pvc-pod created
+
+# Get a shell inside the Pod
+$ kubectl exec -it pod/pvc-pod -- bash
+
+# No files in the volume yet
+root@pvc-pod:/# ls /data
+
+# Write a file to the volume
+root@pvc-pod:/# echo "bar" > /data/foo
+
+# The file now shows in the volume
+root@pvc-pod:/# ls /data
+foo
+*/

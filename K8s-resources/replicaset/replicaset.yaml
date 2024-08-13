@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Replicaset
+metadata:
+  name: frontend
+  namespace: sandbox-90075241
+  labels:
+    app: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+        - name: nginx
+          image: cgr.dev/chainguard/nginx:latest
+     
+    
