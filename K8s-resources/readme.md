@@ -30,30 +30,30 @@
 
 
 #### Why do companies adopt kubernetes?
-**Container Orchestration**: simplifies the management, deployment, scaling of your containerized applications
-**Service Discovery, autoscaling and Load Balancing**; where applications can be automatically discovered by other services, scaled up or down based on demand, and distributed
-**Simplifies deployments**supports different deployments strategies, Rolling Update & Rollbacks,  release new versions of applications and to revert to previous versions if needed
-**Storage Orchestration, Self-Healing, Secrets and Configuration Management** inbuilt mechanism for healing, managing storage and securing sensitive information
-**Multi-Cloud and Hybrid Cloud Support** supports deployment across omprem and multicloud environments
-**Role-Based Access Control (RBAC)**
-**Pods and Multi-Container SupportMonitoring and Logging** intergrates various monitoring tools to perform health checks
-**Highly available and has self healing capabilities**: scale up and down based on workloads and helps your application beacome resilient. I f a container fails it is restarted over and over
+- **Container Orchestration**: simplifies the management, deployment, scaling of your containerized applications
+- **Service Discovery, autoscaling and Load Balancing**; where applications can be automatically discovered by other services, scaled up or down based on demand, and distributed
+- **Simplifies deployments**supports different deployments strategies, Rolling Update & Rollbacks,  release new versions of applications and to revert to previous versions if needed
+- **Storage Orchestration, Self-Healing, Secrets and Configuration Management** inbuilt mechanism for healing, managing storage and securing sensitive information
+- **Multi-Cloud and Hybrid Cloud Support** supports deployment across omprem and multicloud environments
+- **Role-Based Access Control (RBAC)**
+- **Pods and Multi-Container SupportMonitoring and Logging** intergrates various monitoring tools to perform health checks
+- **Highly available and has self healing capabilities**: scale up and down based on workloads and helps your application beacome resilient. I f a container fails it is restarted over and over
 
 
 #### MONOLITHIC ARCHITECTURE: is are monolithic stacks
 >> design approach where application stacks that are developed, tightly coupled and deployed as a single unit or codebase. What does that mean? All components are part of a single application Frontend, logic and backend.
 >>The Applications share the same memory space
-**Examples of monolith stacks**
+- **Examples of monolith stacks**
 >LAMP: Linux, web server, Mysql
 >MEAN: nosql, expressjs, Angular, Nodejs
 >JEE: Java, Spring, Tomcat/Jboss/Wblogic, Mysql
 >Django Stack: Python, Django, PostgreSQL
-**Benefits**: 
+- **Benefits**: 
 >Easy for small teams to develop and test 
 >Doesn't require complex networking  and has a lower overhead
 >Has only only a few points of entry 
 
- **Cons**
+- **Cons**
 >Require the whole application to be deployed
 >Doesn't scale well if parts of the application breaks
 >Diffcult to update all application dependecies and libraries
@@ -70,55 +70,55 @@ is a design approach where different parts of an application stack are developed
 #### KUBERNETES
  is an open-source container orchestration platform designed for automating the deployment, scaling, and management of containerized applications. 
 
->>**Alternatives to KUBERNETES**: Apache Mesos, Openshift, Nomad, Juju, Tanzu, IBM, AKS, EKS, GCP, Suse rancher, 
->>**Cluster orchestration**: gcloud, ekctl, kubectl, aksctl
->>**Container platform**: Podmad, docker
+- **Alternatives to KUBERNETES**: Apache Mesos, Openshift, Nomad, Juju, Tanzu, IBM, AKS, EKS, GCP, Suse rancher, 
+- **Cluster orchestration**: gcloud, ekctl, kubectl, aksctl
+- **Container platform**: Podmad, docker
 
->>**Pod**: smallest deployable unit in kubernetes, represents a collection of one or more containers running in your cluster
->>**Node**: smallest fundamental unit of computing hadware, represent single machines in cluster
+- **Pod**: smallest deployable unit in kubernetes, represents a collection of one or more containers running in your cluster
+- **Node**: smallest fundamental unit of computing hadware, represent single machines in cluster
 and status of a node staust contains adderss, condition, capacity and info
-**Containers**: Light weight isolated environments that comprises an application and it dependencies
->>**Container runtime**: software responsible for managing and running containers on a host system
->>**Container orchestration**: process of managing containers in a distributed environment
->>**Cluster**: group of nodes that work together to run containerized apps and manages the underlying infrastructure
->>**Heapster**: performance monitoring and metrics collection system for data collected by kublet.
->>**Master nodes**: manages, plans, schedules, monitors all activities within the cluster, communicates with worker nodes to ensure all applications in the cluster are running smoothly.
-**comprised of**
- >>**Etcd**: Keyvalue database that stores cluster information mostly in Json, Yaml format.
- >>**Scheduler**: Assigns pods to new Nodes based on resource availability.
- >>**Controller manager**: Ensures the desired state of the cluster by making sure a specific number of pods are running. Runs various controllers like the :
-    >**Node controller**: monitors and manages the health of nodes, 
-    >**Replication controller**: ensures specific number of pods are running at all times
-    >**Namespace controller**: creates and manages namespaces in cluster
-    >**Job controller**: Manages batch or on-time jobs that run to completion
-    >**Deployment controller**: manges deployment and scaling of applications
-    >**Endpoint controller**: manages endpints withservices
->> **Api-server**: gateway/entry-point in to the Kubernetes cluster, processes, handles API request from users, applications  and  other components to interact with the cluster. authenticates, authorizes and validates request handling CRUD create read update and delete operations.
+- **Containers**: Light weight isolated environments that comprises an application and it dependencies
+- **Container runtime**: software responsible for managing and running containers on a host system
+- **Container orchestration**: process of managing containers in a distributed environment
+- **Cluster**: group of nodes that work together to run containerized apps and manages the underlying infrastructure
+- **Heapster**: performance monitoring and metrics collection system for data collected by kublet.
+- **Master nodes**: manages, plans, schedules, monitors all activities within the cluster, communicates with worker nodes to ensure all applications in the cluster are running smoothly.
+- **comprised of**
+- **Etcd**: Keyvalue database that stores cluster information mostly in Json, Yaml format.
+- **Scheduler**: Assigns pods to new Nodes based on resource availability.
+- **Controller manager**: Ensures the desired state of the cluster by making sure a specific number of pods are running. Runs various controllers like the :
+     - **Node controller**: monitors and manages the health of nodes, 
+     - **Replication controller**: ensures specific number of pods are running at all times
+     - **Namespace controller**: creates and manages namespaces in cluster
+     - **Job controller**: Manages batch or on-time jobs that run to completion
+     - **Deployment controller**: manges deployment and scaling of applications
+     - **Endpoint controller**: manages endpints withservices
+- **Api-server**: gateway/entry-point in to the Kubernetes cluster, processes, handles API request from users, applications  and  other components to interact with the cluster. authenticates, authorizes and validates request handling CRUD create read update and delete operations.
 
->>Worker nodes: runs the containers and executes the workloads-
+- **Worker nodes**: runs the containers and executes the workloads-
 comprised of 
->**Kubelet**; Agent, monitors and manages the pods state, replaces failed pods
->**Containerd engine**: runtime environment for our container, responsible 4 creating and managing containers
->**Kubeproxy**: Manages communication between Pods and the external world. Maintains network rules for load balancing and routing.
+- *Kubelet**; Agent, monitors and manages the pods state, replaces failed pods
+- **Containerd engine**: runtime environment for our container, responsible 4 creating and managing containers
+- **Kubeproxy**: Manages communication between Pods and the external world. Maintains network rules for load balancing and routing.
 
 #### KUBERNETES STABDARD INTERFACE
->>**Container interface:** used to execute and run container processes within the kube system. examples containerd, cri-o
->>**Container network interface:** defines how container network is setup and defined in the kubernetes ecosystem such calico, Flannel, cilium, AWSVPC plugin, Azure CNI, GPC CNU
->>**Container storage interfaces:** standard interface to provide durable persistent storage to containers. Examples EBS CSI-driver, Secrets store CSI-driver, Azure Disk SCI-driver
+- **Container interface:** used to execute and run container processes within the kube system. examples containerd, cri-o
+- **Container network interface:** defines how container network is setup and defined in the kubernetes ecosystem such calico, Flannel, cilium, AWSVPC plugin, Azure CNI, GPC CNU
+- **Container storage interfaces:** standard interface to provide durable persistent storage to containers. Examples EBS CSI-driver, Secrets store CSI-driver, Azure Disk SCI-driver
 
->>**Kubeconfig**: stored in ~/.kube/config contains information about cluster, user credentials, certfificates and context
->>**Service files**: contains information about networking such as clusterIP, NodePort, Loadbalancer, Selectors
->>**Deployment files**: defines the desired state of deployment, pod replicas, container images and resource limits
->>**Config maps**- stores application config files in plain format
+- **Kubeconfig**: stored in ~/.kube/config contains information about cluster, user credentials, certfificates and context
+- **Service files**: contains information about networking such as clusterIP, NodePort, Loadbalancer, Selectors
+- **Deployment files**: defines the desired state of deployment, pod replicas, container images and resource limits
+- **Config maps**- stores application config files in plain format
 kubectl create configmap myconfigmao --from literal=env=dev
->**Use cases: create env variables**
->>**Secrets**: stores sensitive data like Password, API keys, in an encrypted format
+- **Use cases: create env variables**
+- **Secrets**: stores sensitive data like Password, API keys, in an encrypted format
 echno -n 'name you want to encode' | base64
 echo -n 'admin' ./username.txt
 echno -n 'snap' ./ password.txt
 kubectl create secret generic mysecret --from=file=./username.txt --from=./password.txt
 
->>**Deployment**: manages lifecycle of apllications including deployment, scaling, rollingout(gradually updaing the application), rollback reverting back to a preious version)
+- **Deployment**: manages lifecycle of apllications including deployment, scaling, rollingout(gradually updaing the application), rollback reverting back to a preious version)
 >>**Replica set**: ensures a specific number of pods are running  and it's used for scaling
 >>**Daemon set**: objects that are ran on every node in a cluster  and are used for logging, monitoring .
 >>**Stateful set**: objects that manages stateful applications requiring persistent storage, network identities such as database, message queries
