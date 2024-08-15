@@ -2,6 +2,10 @@
 ## Resource Types
 
 🚨 **Note:** You should follow this ordering (and this is the order they are covered in the video course)
+**static pods**
+**When making a kubectl how does the kubectl authenticates who you are?** it speaks to the kubecongif
+**when making a a kubectl what happens in the background**
+your kubeconfig file has certificates, 
 
 - **Namespace**: Provides a way to divide cluster resources between multiple users.
 - **Pod**: The smallest and simplest Kubernetes object. Represents a set of running containers on your cluster.
