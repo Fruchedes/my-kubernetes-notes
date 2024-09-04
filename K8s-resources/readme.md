@@ -2,11 +2,13 @@
 ## Resource Types
 
 🚨 **Note:** You should follow this ordering (and this is the order they are covered in the video course)
+-**Certificate Authority**: trusted root of all certificates in the cluster allows components to validat each ordeer
+- Controller, scheduler manager and Kubelet all have a client certificate and communicate with Apiserver who has the server certificate
 
 - **Namespace**: Provides a way to divide cluster resources between multiple users.
 - **Pod**: The smallest and simplest Kubernetes object. Represents a set of running containers on your cluster.
 - **ReplicaSet**: Ensures that a specified number of pod replicas are running at any given time.
-- **Deployment**: Manages stateless applications, providing features such as rolling updates and rollbacks.
+- **Deployment**: Manages lifecycle of pods, providing features such as replicasets, rolling updates and rollbacks.
 - **Service**: Defines a logical set of pods and a policy by which to access them.
 - **Job**: Creates one or more pods that run to completion.
 - **CronJob**: Schedules jobs to run at specified times or intervals.
@@ -42,7 +44,7 @@
 
 #### MONOLITHIC ARCHITECTURE: is are monolithic stacks
 >> design approach where application stacks that are developed, tightly coupled and deployed as a single unit or codebase. What does that mean? All components are part of a single application Frontend, logic and backend.
->>The Applications share the same memory space
+>>The Applications shares the same memory space
 **Examples of monolith stacks**
 >LAMP: Linux, web server, Mysql
 >MEAN: nosql, expressjs, Angular, Nodejs
@@ -91,7 +93,7 @@ and status of a node staust contains adderss, condition, capacity and info
     >**Replication controller**: ensures specific number of pods are running at all times
     >**Namespace controller**: creates and manages namespaces in cluster
     >**Job controller**: Manages batch or on-time jobs that run to completion
-    >**Deployment controller**: manges deployment and scaling of applications
+    >**Deployment controller**: manages deployment and scaling of applications
     >**Endpoint controller**: manages endpints withservices
 >> **Api-server**: gateway/entry-point in to the Kubernetes cluster, processes, handles API request from users, applications  and  other components to interact with the cluster. authenticates, authorizes and validates request handling CRUD create read update and delete operations.
 
@@ -114,11 +116,11 @@ kubectl create configmap myconfigmao --from literal=env=dev
 >**Use cases: create env variables**
 >>**Secrets**: stores sensitive data like Password, API keys, in an encrypted format
 echno -n 'name you want to encode' | base64
-echo -n 'admin' ./username.txt
+echo -n 'admin'   | basecode 64
 echno -n 'snap' ./ password.txt
 kubectl create secret generic mysecret --from=file=./username.txt --from=./password.txt
 
->>**Deployment**: manages lifecycle of apllications including deployment, scaling, rollingout(gradually updaing the application), rollback reverting back to a preious version)
+>>**Deployment**: manages lifecycle of aplications including deployment, scaling, rollingout(gradually updaing the application), rollback reverting back to a preious version)
 >>**Replica set**: ensures a specific number of pods are running  and it's used for scaling
 >>**Daemon set**: objects that are ran on every node in a cluster  and are used for logging, monitoring .
 >>**Stateful set**: objects that manages stateful applications requiring persistent storage, network identities such as database, message queries
@@ -128,12 +130,13 @@ kubectl create secret generic mysecret --from=file=./username.txt --from=./passw
 >>**Sidecar**:  specialized containers that run to completion before the main application containers in a Pod start.
 >>**Init container**:
 >Useful: when we want to perform data migration or pre-processing tasks before the application starts.
->Labels: used to identify and group resources
+>**Labels**: used to identify and group resources
 >>>**Selectors**: are used to query and select resources based on their labels
+>>**Pod selector**: selecting a group of pods based 
 >>**Equity based selector**: select resources based on certain criteria that are equitable or balanced. 
 >>**Equality based selector**:  feature for selecting resources based on exact label values or simple logical conditions.
 Node selectors:
->>**Service account**: used grant access permission  to pods and apps in your cluster enabling apps to interract with th API server
+>>**Service account**: used to grant access permission  to pods and apps in your cluster enabling apps to interract with th API server
 usecases: grant specific permissions, run applications with different roles
 
 #### 4 resources under RBAC role based acess control authorization mechanism
@@ -198,7 +201,7 @@ HPA
 **Cilium**: best CNI plugin, provides best security, observability and good for complex clusters
 **Kube-router**: lightweight CNI plugin Loadbalancer with loadbalancing features and network policiess
 
-#### WHY use CALICO? Provides ###
+#### WHY USE CALICO? Provides ###
 -**Advanced networking policies**: define fine-frained networking policies  and rules over containers based on labels, ports
 **Scalability**: Handles large clusters with ease 
 **Cross-Cluster networking**: has the capacity to connect multiple clusters together
