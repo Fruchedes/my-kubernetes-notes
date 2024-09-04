@@ -1,7 +1,80 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-pod
+  namespace: frontend-nginx
+  labels:
+    app: nginx
+spec:
+  containers:
+    - name: nginx-container
+      image: nginx
+      ports:
+        - containerPort: 80
+      volumeMounts:
+        - name: vol1
+          mountPath: "/usr/share/nginx/html"
+        - name: nginx-configmap
+          mountPath: "/etc/nginx/nginx.conf"
+  volumes:
+    - name: vol1
+      hostPath:
+        path: "/C:/Users/fruch"
+    - name: pvc
+      persistentVolumeClaim:
+        claimName: pvc
+    - name: ngix-configmap
+      configMap:  
+        name: nginx-configmap
+      livenessProbe:
+        httpGet:
+          path: /healthz
+          port: 80
+        periodSeconds: 10
+        failureThreshold: 3
+      readinessProbe:
+        httpGet:
+          path: /healthz
+          port: 80
+        periodSeconds: 5
+        failureThreshold: 1
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+apiVersion: indicates the release version of k8s object
+Kind: indicates what type of k8s object you want to create
+metadata: includes names, annotation, labels, namespace
+spec: sets specifications a
 
 
 Attach volume to pod
@@ -9,25 +82,41 @@ Attach volume to pod
 apiVersion: v1
 kind: Pod
 metadata:
-  name: nginx-pod
+  name: nginx-configpod
+  namespace: frontend-nginx
 spec:
   containers:
     - name: nginx-container
-      image: nginx:latest
+      image: nginx
+      ports:
+      - containerPort: 80
+      command: ['sh', 'c', 'echo "Hello from Edwin!" && sleep 3600']
+      resources:
+       requests:
+          cpu: 200Mi
+          memory: 256Mi
+       limits:
+          cpu: 1
+          memory: 256Mi
+
+
       volumeMounts:
-        - mountPath: /data
-          name: data
+          name: nginx-volume
+          mountPath: /etc/config
   volumes:
-    - name: data
-      persistentVolumeClaim:
-        claimName: pvc-dynamic
+    - name: nginx-volume
+      configMap: nginx-config
+
 
 /* Create your Pod, then try writing some files to /data:
 $ kubectl apply -f pod.yaml
 pod/pvc-pod created
 
 # Get a shell inside the Pod
-$ kubectl exec -it pod/pvc-pod -- bash
+$ kubectl exec -it pod/pvc-pod --  /bin/bash/
+kubectl get pods -o wide
+kubectl get pods -o yaml
+kubectl exec nginx-pod -n frontend-nginx -- curl podipaddress
 
 # No files in the volume yet
 root@pvc-pod:/# ls /data

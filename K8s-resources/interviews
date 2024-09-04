@@ -1,6 +1,157 @@
-Difference between configmap and secret and how would you use them?
-Differnece between stateful and daemon set and how would you use them?
-Differnetce between replicaset and deployments, how would you use them?
-What is a namespace and how would you use them?
-Why do companies adopt Kubernetes
-Have you worked with storage and what type of storage have you provisioned
+## 1. Why do companies adopt Kubernetes?
+Companies adopt kubernetes for various reasons:
+Container Orchestration: simplifies the management, deployment, scaling of your containerized applications
+Service Discovery, autoscaling and Load Balancing: where applications can be automatically discovered by other services, scaled up or down based on demand, and distributed
+Simplifies deployments: supports different deployments strategies, Rolling Update & Rollbacks,  release new versions of applications and to revert to previous versions if needed
+Storage Orchestration, Self-Healing, Secrets and Configuration Management: inbuilt mechanism for healing, managing storage and securing sensitive information
+Multi-Cloud and Hybrid Cloud Support: supports deployment across omprem and multicloud environments
+Role-Based Access Control (RBAC): Pods and Multi-Container SupportMonitoring and Logging** intergrates various monitoring tools to perform health checks
+Highly available and has self healing capabilities**: scale up and down based on workloads and helps your application beacome resilient. If a container fails it is restarted over and over
+## 2. Difference between configmap and secret and how, when would you use them?
+Secrets: is used to store sensitive data, such as passwords, API keys, or SSL certificates. stored in Base64-encoded format
+Config: map is Used to store non-sensitive configuration data, such as application settings, environment variables, or configuration files.
+ConfigMap data is stored as plain text and can be easily accessed by the pods.
+Useful for storing application-specific configuration that needs to be shared across multiple pods.
+## 3. Difference between stateful and daemonset and how, when would you use them?
+Daemonsets: are object running on all nodes are are responsible for monitoring and logging, network plugins 
+statefulsets: are objects used for applications that require persistance storage and a stable network identity.
+## 4. Difference between replicaset and deployments, how, when would you use them?
+Replica set: Ensures that a specified number of pod replicas are running at all times. Used fo scaling pods
+Deployment: Manages the lifecycle of pods, including rolling updates, rollbacks, and scaling.
+## 5. Difference between affinity, taints and tolorations, how, when would you use them?
+Affinity: specifies how  pods are scheduled on specific nodes based on the properties of the nodes, such as labels or node attributes.
+Taints:  mark or prevent certain pods from being scheduled on certain nodes based on properties
+Tolorations: allows certain pods to be scheduled on nodes with specific taints,
+## 6. Difference between init container and sidecar, how, when would you use them?
+Init containers: used for task like downloading files, running databas miugrations, setting up configuration before the application starts
+sidecars: used for logging, monitoring and proxying network traffic
+## 7. Difference between iliveness and readiness, how, when would you use them?
+Liveness probe: checks if the container is running and healthy. Useful for dettecting and recovering apps crashes or dreadlocks
+Readiness probe: checks if the container is ready to start accepting traffic
+8 ## What is a namespace and how, when would you use them?
+Provides a way to divide your cluster in between multiple users and teams
+## 8.Have you worked with storage and what type of storage have you provisioned?
+Persistent Volumes (PVs) and Persistent Volume Claims (PVCs) for provisioning static and dynamic storage volumes.
+Local storage for applications that require fast, low-latency access to data.
+Network-attached storage (NAS) or Storage Area Network (SAN) volumes for larger, shared storage needs.
+Cloud-provider-specific storage solutions, such as Amazon EBS, Google Persistent Disk, or Azure Disks.
+## 9.What policies are present in persistent volume claims?
+Access Modes: Defines how the volume can be accessed, such as ReadWriteOnce, ReadOnlyMany, or ReadWriteMany.
+Storage Class: Specifies the type of storage to be provisioned, such as SSD or HDD.
+Volume Modes: Defines whether the volume should be formatted as a filesystem or used as a raw block device.
+Reclaim Policy: Specifies what should happen to the underlying Persistent Volume when the PVC is deleted, such as Retain, Recycle, or Delete.
+Volume Binding Mode: Specifies when volume binding and dynamic provisioning should occur.
+## 10. what volume access modes with volumes?
+ReadWriteOnce (RWO): The volume can be mounted as read-write by a single node.
+ReadOnlyMany (ROX): The volume can be mounted as read-only by multiple nodes.
+ReadWriteMany (RWX): The volume can be mounted as read-write by multiple nodes.
+
+2 TYPES OF RETAIN POLICIES: 
+Retain:
+Release:
+Status:
+Bound: means volume has been attached or attributed to a pvc
+Release: means volume has been release from that pvc
+
+
+
+## 11. Where is the location of the config? 
+etc/kubernetes/manifest
+## 12. What are kubernetes objects or resourceses? kubectl api-resources
+- Pods: The basic unit of deployment in Kubernetes, containing one or more containers.
+- Services: Provide a stable network endpoint for a set of Pods.
+- Service Accounts: Provide an identity for processes running in Pods.
+- Resource Quotas: Limit the total resources consumed by all Pods in a namespace.
+- Persistent Volumes (PVs): Provide storage to Pods, independent of the Pod's lifecycle.
+- Persistent Volume Claims (PVCs): Requests storage resources, which are then bound to PVs.
+- Endpoints: Provide the IP addresses and ports for a Service.
+- ConfigMaps: Provide configuration data to Pods.
+## 13. How does admission controller worker?
+The Kubernetes API server is the central control plane component that exposes the Kubernetes API. When a user or controller submits a request to 
+the API server, it goes through a series of admission controllers, which are pluggable components that can modify or validate the request before it 
+is processed. Admission controllers are used to enforce various policies and validations, such as resource quotas, security constraints, and more.
+## 14. How does the Api server validates users: 
+Api server validates identity of users using different authentification and authorization mechanisms. 
+For authentification: the API validates user identity and incoming request using via Json web token, x509.certificates, oidc processes, username & password
+For authorization: the api applies the authorization mechanism which is admission control which are your plugable modules, RBAC roels, Node authorizers
+## 15. How would you install Kubernetes on prem in air gap environment?
+Air gab environments are isolated environments with no network or internet access similar to the private subnets with isolated environments. 
+Prepare the infrastructure: identifying the machines to host cluster making sure they meet theb requirement and that the network is isolated
+- Download the Kubernetes binaries (e.g., kubectl, kubeadm, kubelet)from a trusted source and transfer them to the air-gapped environment using removable media.
+- store them in a private container registry within the air-gapped environment.
+- Deploy and configurea private container registry, such as Docker Registry or Harbor, within the air-gapped environment.
+- Load the required Kubernetes component images into the private registry.
+- Use the kubeadm tool to initialize the Kubernetes control plane on one of the prepared nodes.
+- Ensure that the kubeadm command references the local container registry for the Kubernetes component images.
+- Use the kubeadm tool to join additional nodes to the Kubernetes cluster.
+- Establish secure procedures for updating Kubernetes components and container images within the air-gapped environment.
+- Regularly backup the Kubernetes configuration and store the backups in a secure, offline location.
+- Implement strict access controls and auditing for the Kubernetes cluster within the air-gapped environment.
+## 16. what is your process of setting up a kubernetes cluster?
+- created federated access token for the repo
+- created a bucket, dbtable to store and lock state
+- created a terraform module with add-ons
+- create a workflow that automates the deployment 
+## 17. How do you install Kubernetes in an environment without internet?
+## 18. How do you configure your images to get into that environment?
+- Transfer the container images to the air-gapped environment using a secure, offline method, such as copying them to a removable storage device (e.g., external hard drive, USB drive).
+- Deploy a private container registry within the air-gapped environment, such as Docker Registry or Harbor.
+- Load the Kubernetes container images into the private registry.
+- Configure the private registry to use appropriate network settings
+## 19. What type of node groups did you use to provision clusters? Ec2instances, Fargate, EKS
+## 20. What type of experience do you have with open shift?
+## 21. What are cgroups in Linux?
+## 22. How do you enable logs in a cluster?
+- setting up namespace-level logging, which can help with troubleshooting and auditing.
+## 22. What are the steps you take before upgrading a cluster?
+Backup the Cluster: Perform a full backup of the Kubernetes cluster, including the API server, etcd, and any persistent volumes.
+Test the Upgrade: Perform the upgrade in a non-production environment first to ensure it works as expected.
+Review Deployment Manifests: Ensure that all Kubernetes object manifests (Deployments, StatefulSets, etc.) are up-to-date and compatible with the new Kubernetes version.
+Coordinate with Stakeholders: Communicate the upgrade plan and timeline with all stakeholders to ensure minimal disruption.
+Perform the Upgrade: Follow the appropriate upgrade process for the Kubernetes distribution (e.g., kubeadm, kops, EKS) to upgrade the cluster.
+Monitor the Upgrade: Closely monitor the cluster during and after the upgrade to ensure everything is functioning as expected.
+Kubernetes Version Rollback:
+Kubernetes does support version rollbacks, but the process can be complex and may involve downtime. The general approach would be:
+Backup the Cluster: Perform a full backup of the Kubernetes cluster before attempting the rollback.
+Identify the Target Version: Determine the specific Kubernetes version to which you want to roll back.
+Prepare the Rollback: Ensure that all Kubernetes object manifests are compatible with the target Kubernetes version.
+Perform the Rollback: Follow the appropriate rollback process for the Kubernetes distribution, which may involve manually downgrading components or using a tool like kubeadm.
+Verify the Rollback: Thoroughly test the cluster after the rollback to ensure everything is functioning correctly.
+## 23. Can you roll back a Kubernetes version?
+ that rolling back Kubernetes can be a complex and risky process, and it's generally recommended to avoid it if possible by carefully planning and executing upgrades.
+## 24.What are the authentication and authorization mechanism in kubernetes?
+**Authentication:** Api server validates identity of users using different methods: bearer tokens, x509.certificates, oidc processes, https
+The API server supports several authentication methods, including:
+- X.509 Client Certificates: The API server can verify the identity of users or client applications using X.509 client certificates.
+- Bearer Tokens: The API server can authenticate users or client applications that present a valid bearer token, such as a JSON Web Token (JWT).
+- HTTP Basic Authentication: The API server can authenticate users using a username and password.
+- OIDC (OpenID Connect): The API server can integrate with an external OIDC-compliant identity provider to authenticate users.
+The API server is configured to accept one or more of these authentication methods, and it will use the configured method(s) to verify the identity of the incoming request.
+**Authorization:** authorization is done using rbac, node authorizer, webhook, 
+After a user or client application is authenticated, the API server will authorize their access to resources based on the user's or application's permissions.
+-Kubernetes uses several built-in authorization modules, including:
+-RBAC (Role-Based Access Control): The RBAC system allows cluster administrators to define roles with specific permissions, and then assign those roles to users, groups, or service accounts.
+-Node Authorizer: The Node Authorizer is responsible for authorizing node-related operations, such as allowing nodes to retrieve their configuration or report their status.
+-Webhook Authorizer: The Webhook Authorizer delegates authorization decisions to an external service, allowing for custom authorization policies.
+The API server will apply the appropriate authorization module(s) to determine whether the authenticated user or client application has the necessary permissions to perform the requested operation.
+**Attribute-Based Access Control (ABAC):**
+In addition to the built-in authorization modules, Kubernetes also supports Attribute-Based Access Control (ABAC), which allows administrators to define access policies based on the attributes of the user, resource, or environment.
+ABAC policies can be used to implement more fine-grained access control, such as restricting access based on the user's role, the namespace of the resource, or the time of day.
+**Admission Control:**
+The API server also employs admission control, which is a set of pluggable modules that can intercept and modify requests before they are processed by the API server.
+Admission controllers can be used to implement additional validation, mutation, or policy enforcement rules, such as requiring certain labels or annotations on resources.
+**Audit Logging:**
+The API server generates audit logs for all incoming requests, which can be used for security monitoring, compliance, and troubleshooting.
+The audit logs record information about the request, including the user, resource, and action performed, as well as the outcome of the request.
+## Are you familiar with the concept of boast trapping?
+## What are the concepts, prequiste for rke2 cluster or clusters in kubernetes?
+## How do you set and configure the config yaml file in the boost strapping process?
+## How would you enable auditing within the rke2 cluster? 
+## you have 3 directorys a, b, c and you are in directory a, how do you move files from directory a to b to c with out ch
+# How do you set up an inventory in ansible? Say you have a playbook you want to run
+# Have you worked with endpoints? How are endpoints used in kubernetes?
+# Do you have experience setting prewebhook and validating webhook?
+# What has been you achievemnet in your career so far?
+# what is one thing you were working on that you couldn't resolve?
+# Do you have express with network policies? How would you 
+# How would you configure your readiness, liveness, security scanning, LDAP for MAF, PSA, PDI should be enforced, ensureing containers should run as root probes?

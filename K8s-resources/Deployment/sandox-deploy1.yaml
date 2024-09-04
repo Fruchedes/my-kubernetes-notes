@@ -22,8 +22,6 @@ spec:
           volumeMounts:
           - name: config-volume
             mountPath: /etc/config
-          - name: secret-volume
-            mountPath: /etc/secret
           ports:
             - containerPort: 8080
               protocol: TCP #Used for applications that expose HTTP endpoints for health checks.

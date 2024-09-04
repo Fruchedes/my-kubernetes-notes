@@ -1,0 +1,60 @@
+#Example YAML for Role:
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: service-account-admin
+rules:
+- apiGroups: [""]
+  resources: ["serviceaccounts"]
+  verbs: ["create", "get", "list", "watch", "update", "patch", "delete"]
+
+
+#Example YAML for RoleBinding:
+---
+  apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: service-account-admin-binding
+  namespace: <your-namespace>  # Replace with your target namespace
+subjects:
+- kind: User
+  name: <username>  # Replace with the actual user or service account name
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: service-account-admin
+  apiGroup: rbac.authorization.k8s.io
+
+
+#Example YAML for ClusterRoleBinding:
+---
+  apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: service-account-admin-binding
+subjects:
+- kind: User
+  name: <username>  # Replace with the actual user or service account name
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: ClusterRole
+  name: service-account-admin
+  apiGroup: rbac.authorization.k8s.io
+
+  
+##Example YAML for ClusterRole:
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: service-account-admin
+rules:
+- apiGroups: [""]
+  resources: ["serviceaccounts"]
+  verbs: ["create", "get", "list", "watch", "update", "patch", "delete"]
+
+
+
+
+

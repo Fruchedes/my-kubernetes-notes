@@ -1,3 +1,32 @@
+#create a nginx-pod
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-pod
+  namespace: frontend-nginx
+  labels:
+  app: nginx
+spec:
+  containers:
+    - name: nginx-container
+      image: nginx
+      ports:
+       - containerPort: 80
+      livenessProbe:
+        httpGet:
+          path: /healthz
+          port: 80
+        periodSeconds: 10
+        failureThreshold: 3
+      readinessProbe:
+        httpGet:
+          path: /healthz
+          port: 80
+        periodSeconds: 5
+        failureThreshold: 1
+  
+  
+
 # create a namespace
 ---
 apiVersion: v1
@@ -20,6 +49,7 @@ spec:
       port: 80 
       targetPort: 80
 # create a configmap
+# commands: ["bin/sh", "-c", "env"]
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -36,7 +66,7 @@ data:
       }
 
       location /{
-        root /usr/share/nginx/html;
+        root /usr/share/nginx/html; #specifies where directory where files would be served from
         index index.html;
       }
     }
@@ -49,16 +79,16 @@ metadata:
   namespace: frondend-nginx
 type: Opaque
 data:
-  secret-key: <base64-encoded-value>
+  secret-key: ZWR3aW4=
 
 # Define a storage class
 ---
-apiVersion: storage.k8s.io/v1
+apiVersion: v1
 kind: StorageClass
+apiVersion: storage.k8s.io/v1beta1
 metadata:
-  name: csi-storageclass
-  namespace: frontend-nginx
-provisioner: csi-driver-name
+  name: my-storage-class
+provisioner: docker.io/hostpath
 
 # Create a persistent volume
 ---
@@ -66,18 +96,17 @@ apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: nginx-pv
-  namespace: frontend-nginx
+  labels:
+    type: local
 spec:
-   accessModes:
-    - ReadWriteOnce 
+  storageClassName: manual
   capacity:
-    storage: 1Gi
-  storageClassName: csi-storageclass # or standard with hostPath:
- 
+    storage: 256Mi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/data"  # Adjust path as necessary
   persistentVolumeReclaimPolicy: Retain
-  csi:
-    driver: csi-driver-name
-    volumeHandle: unique-volume-id-for-nginx
 
 # Create a PVC
 ---
@@ -87,42 +116,47 @@ metadata:
   name: nginx-pvc
   namespace: frontend-nginx
 spec:
+  storageClassName: manual
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 1Gi
-  storageClassName: csi-storageclass # or standard
+      storage: 256Mi # or standard
 
 
 ## create a deployment with configmap, secret, liveness and readiness probe
+# create a namespace
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: nginx-deployment-1
   namespace: frontend-nginx
+  labels:
+    app: nginx
 spec:
   replicas: 2
   selector:
     matchlabels:
-      app: nginx-app-1
+      app: nginx
   template:
     metadata:
       labels:
-        app: nginx-app-1
+        app: nginx
     spec:
       containers:
       - name: nginx-container
-        image: nginx:latest
+        image: nginx
+        ports:
         volumeMounts:
+        - containerPort: 80
         - name: nginx-configmap
-          mountPath: /etc/nginx/nginx.conf
+          mountPath: "/etc/nginx/nginx.conf"
           subPath: nginx.conf
         - name: nginx-secret
-          mountPath: /etc/nginx/secret
-        - name: nginx-ps
-          mouthpath: /usr/share/nginx/html
+          mountPath: "/etc/nginx/secret"
+        - name: nginx-pv
+          mouthpath: "/mnt/data"
       readinessProbe: # determines when a pod is ready to accept traffic
         httpGet:
           path: / healthz
@@ -145,9 +179,13 @@ spec:
           limits:
             memory: "128Mi"
             cpu: "500m"
+      - name: nginx-config
+        configMap:
+          name: nginx-configmap
 
 # Repeat the above template for deployment-2 and deployment-3
 # deployment with  configmap, secret, PV, PVC, CSI, liveness and readiness probe
+# create a namespace
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -163,18 +201,11 @@ spec:
     spec:
       containers:
       - name: nginx-container
-        image: nginx:latest
+        image: nginx
         volumeMounts:
         - name: nginx-config
           mountPath: /etc/nginx/nginx.conf
           subPath: nginx.conf
-        - name: nginx-secret
-          mountPath: /etc/nginx/secret
-        -name: nginx-ps
-          mouthPath: /data
-      volumes:
-         persistentVolumeClaim:
-         claimName:nginx-pvc
       readinessProbe:
         httpGet:
           path: /

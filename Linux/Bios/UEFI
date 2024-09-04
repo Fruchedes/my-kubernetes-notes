@@ -1,0 +1,33 @@
+BOIS BASIC iNPUT AND oUTPUT SYSTEM
+UEFI Unified extensible Firmware Interface
+POST Power-on Self-Test
+
+Set date and time
+Disable or enable intergrated peipherals
+Change hadware settings like IRQS ad DMA
+choose the order of boot devices
+Configure error protection
+Disable features 
+
+Inspecting devices in Linux: 
+sudo lspi: shows all devices that are connected to the PCI BURST
+sudo lspci -s 00:03.0 -v
+sudo lspci -s 00:03.0 -k 
+
+identify devices connectect by usv
+sudo lsusb 
+sudo lsub -that
+
+**Kernel Modules**
+sudo lsmod: list the kernel Modules
+sudo lsmod |fgrep -i snd
+
+
+sudo modprobe -r <module-name>: unload the module 
+sudo modinfo module-name: get information about module
+sudo modinfo -p module-name: 
+
+
+Information and device files
+/proc special directories 
+/sys

@@ -1,0 +1,55 @@
+**boot the system***
+How a linux system boot in 4 stages
+Bios/Uefi, then boot loader, kernel and the init 
+
+BIOS/UEFI initializes hardware and loads the boot loader.
+Boot Loader loads the operating system kernels lik
+e.
+acpi: Enanl;e or siable ACPI support acpi=off disables
+init: Sets system init Example: init=/bin/bash
+system.unit: set systemd target Example: system.unit=graphical.target
+mem: Sets available system RAM Example mem=512M
+maxcpus: Limits processors or cores Examp-le maxcpus=0 or maxxcpus=2
+quite: Hides boot messages
+vga: selects a vidoe mode Ezxample: vga=ask
+root: sets partition example: root=/dev/sda3
+rootflags: Mounts options for the roortv filesystem
+ro: Mounts root filesystem read-only
+rw: Mounts root filesystem read/write
+
+Kernel initializes the system and hardware, then starts system services.
+Init (or its modern equivalents) manages system services and user environments.
+init types
+sysV standard = controls daemons using run lebels which group services together 
+systemd = service manager uses sockets, process monitoring using cgroups, mountshot controls
+upstart = speeds up the boot process 
+journalctl -b 0: 
+/var/log = initializes and system logs
+Process: 
+**BIOS/UEFI:**
+BIOS (Basic Input/Output System) or UEFI (Unified Extensible Firmware Interface) is the firmware interface that initializes and tests the hardware components of the computer when it's turned on. This stage involves detecting and initializing hardware like the CPU, RAM, and storage devices, and then locating and loading the boot loader.
+BIOS is the older standard, while UEFI is more modern and supports larger drives, secure boot, and graphical interfaces.
+
+
+**Boot Loader:**
+The boot loader is a small program whose job is to load the operating system.
+For most systems, the BIOS/UEFI looks for a boot loader on the storage device (like a hard drive or SSD). Common boot loaders include GRUB (for many Linux distributions), LILO, or Windows Boot Manager.
+The boot loader is responsible for presenting a menu (in some cases) and loading the operating system kernel into memory.
+
+**Kernel:**
+The kernel is the core part of the operating system. Once loaded by the boot loader, it takes over control from the boot loader.
+The kernel initializes the rest of the hardware (such as the file system) and sets up system calls, drivers, and other low-level functions needed for the operating system to run.
+The kernel will then load and start essential system services and components necessary for the system's operation.
+Init (or Systemd, Upstart, etc.):
+
+After the kernel has done its job, it starts the init process (or its modern equivalents like systemd, Upstart, or OpenRC).
+
+**Init (short for initialization)**
+ is the first process the kernel starts and it is responsible for starting and managing system services and user interfaces.
+It sets up the user environment, runs startup scripts, and generally ensures that all the services and daemons needed for the operating system to function properly are up and running.
+Bios/Uefi program stored on the chip attached to the mother board and looks 
+for tghe first 440 bytes and looks for the bootstrap 
+
+
+
+Boat laoder 
